@@ -1,0 +1,21 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SubDepartment {
+  id: Float!
+  name: String!
+  description: String!
+}
+
+type Department {
+  id: Float!
+  name: String!
+  description: String
+  subDepartments: [SubDepartment]
+  parent: Department
+}
+
+type Query {
+  getDepartments: [Department!]!
+}
