@@ -12,6 +12,7 @@ type Department {
   id: Float!
   name: String!
   description: String
+  nestedSubDepartments: [Department!]
   subDepartments: [SubDepartment]
   parent: Department
 }

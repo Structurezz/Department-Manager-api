@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, UsePipes, ValidationPipe,NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, UsePipes, ValidationPipe,NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDTO } from './dto/create-department.dto';
 import { UpdateDepartmentDTO } from './dto/update-department.dto';
@@ -18,9 +18,16 @@ export class DepartmentsController {
 
     @Get()
     async findAll(): Promise<DepartmentDTO[]> {
-        const departments = await this.departmentsService.findAll();
-        return departments.map(department => this.toDTO(department)); // This should now map correctly
+        try {
+            const departments = await this.departmentsService.findAll();
+            return departments.map(department => this.toDTO(department));
+        } catch (error) {
+            console.error('Error fetching departments:', error);
+            throw new InternalServerErrorException('Failed to fetch departments');
+        }
     }
+    
+    
     @Get(':id')
     async findOne(@Param('id') id: number): Promise<DepartmentDTO> {
         const department = await this.departmentsService.findOne(id);

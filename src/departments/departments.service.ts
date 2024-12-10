@@ -36,8 +36,12 @@ export class DepartmentsService {
     
 
     async findAll(): Promise<Department[]> {
-        return await this.departmentRepository.find({ relations: ['subDepartments', 'parent'] });
+        const departments = await this.departmentRepository.find({ relations: ['subDepartments', 'parent'] });
+        console.log('Raw Departments:', departments);
+        return departments;
     }
+    
+    
 
     async findOne(id: number): Promise<Department> {
         const department = await this.departmentRepository.findOne({
@@ -54,14 +58,18 @@ export class DepartmentsService {
         return {
             id: department.id,
             name: department.name,
-            description: department.description,
-            subDepartments: department.subDepartments?.map(subDept => ({
-                id: subDept.id,
-                name: subDept.name,
-                description: subDept.description, 
-            })),
+            description: department.description || null,
+            parentId: department.parent ? department.parent.id : null,
+            subDepartments: department.subDepartments
+                ? department.subDepartments.map(sub => ({
+                      id: sub.id,
+                      name: sub.name,
+                      description: sub.description || null,
+                  }))
+                : [],
         };
     }
+    
     
     
 

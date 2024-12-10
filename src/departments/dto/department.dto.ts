@@ -1,4 +1,3 @@
-// dto/department.dto.ts
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { IsString, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
 import { SubDepartmentDTO } from './sub-department.dto';
@@ -25,5 +24,9 @@ export class DepartmentDTO {
 
     @Field(type => DepartmentDTO, { nullable: true }) // Indicates that parent can be null
     @IsOptional()
-    parent?: DepartmentDTO; 
+    parent?: DepartmentDTO;
+
+    @Field(type => Int, { nullable: true }) // Adds parentId for relational queries
+    @IsOptional()
+    parentId?: number;
 }

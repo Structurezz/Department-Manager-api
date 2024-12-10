@@ -1,10 +1,9 @@
-// department.entity.ts
 import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
-    OneToMany,
     ManyToOne,
+    OneToMany,
     JoinColumn,
 } from 'typeorm';
 import { SubDepartment } from './sub-department.entity';
@@ -25,10 +24,19 @@ export class Department {
     @Column({ nullable: true })
     description?: string;
 
+    // Nested departments (hierarchy)
+    @Field(() => [Department], { nullable: true })
+    @OneToMany(() => Department, (department) => department.parent)
+    nestedSubDepartments?: Department[];
+
+    // SubDepartment relationship
     @Field(() => [SubDepartment], { nullable: 'itemsAndList' })
     @OneToMany(() => SubDepartment, (subDepartment) => subDepartment.department, { eager: true })
     subDepartments?: SubDepartment[];
 
-    @Field({ nullable: true })
-    parent?: Department; // This can be handled in the resolver
+    // Parent department
+    @Field(() => Department, { nullable: true })
+    @ManyToOne(() => Department, (department) => department.nestedSubDepartments, { nullable: true })
+    @JoinColumn({ name: 'parentId' })
+    parent?: Department;
 }
