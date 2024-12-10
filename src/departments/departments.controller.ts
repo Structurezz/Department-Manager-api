@@ -26,6 +26,7 @@ export class DepartmentsController {
             throw new InternalServerErrorException('Failed to fetch departments');
         }
     }
+
     
     
     @Get(':id')
@@ -60,12 +61,11 @@ export class DepartmentsController {
             id: department.id,
             name: department.name,
             description: department.description,
-            subDepartments: department.subDepartments?.map(subDept => ({
-                id: subDept.id,
-                name: subDept.name,
-                description: subDept.description,
-                departmentId: subDept.department?.id,  
-            })) || [] 
+            subDepartments: department.subDepartments.map(sub => ({
+                id: sub.id,
+                name: sub.name,
+                description: sub.description
+            })),
         };
     }
     

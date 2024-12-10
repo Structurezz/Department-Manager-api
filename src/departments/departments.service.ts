@@ -36,9 +36,8 @@ export class DepartmentsService {
     
 
     async findAll(): Promise<Department[]> {
-        const departments = await this.departmentRepository.find({ relations: ['subDepartments', 'parent'] });
-        console.log('Raw Departments:', departments);
-        return departments;
+   
+        return await this.departmentRepository.find({ relations: ['subDepartments'] });
     }
     
     
