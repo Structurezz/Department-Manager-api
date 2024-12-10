@@ -13,20 +13,16 @@ import { join } from 'path';
     imports: [
         TypeOrmModule.forRoot({
             type: 'postgres',
-            host: process.env.DB_HOST,
-            port: Number(process.env.DB_PORT),
-            username: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD, 
-            database: process.env.DB_DATABASE,
+            url: 'postgresql://orizu01:T7cLvpb5Ui0aoVTvXel3KITwBc98I8Ai@dpg-ctc5rn0gph6c73ace1bg-a.oregon-postgres.render.com:5432/structurezz',
             entities: [User, Department, SubDepartment], 
             synchronize: true,
             ssl: {
-                rejectUnauthorized: false, // Allow self-signed certificates; use with caution
+                rejectUnauthorized: false,
             },
         }),
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
-            autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // Automatically generate schema file
+            autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
         }),
         AuthModule,
         DepartmentsModule,
