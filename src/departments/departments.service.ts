@@ -58,15 +58,13 @@ export class DepartmentsService {
         return {
             id: department.id,
             name: department.name,
-            description: department.description || null,
-            parentId: department.parent ? department.parent.id : null,
-            subDepartments: department.subDepartments
-                ? department.subDepartments.map(sub => ({
-                      id: sub.id,
-                      name: sub.name,
-                      description: sub.description || null,
-                  }))
-                : [],
+            description: department.description,
+            subDepartments: department.subDepartments?.map(subDept => ({
+                id: subDept.id,
+                name: subDept.name,
+                description: subDept.description,
+                departmentId: subDept.department?.id,
+            })) || [] 
         };
     }
     
