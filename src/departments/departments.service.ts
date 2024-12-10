@@ -16,22 +16,21 @@ export class DepartmentsService {
     ) {}
 
     async create(createDepartmentDTO: CreateDepartmentDTO): Promise<Department> {
-        const department = new Department();
-        department.name = createDepartmentDTO.name;
-        department.description = createDepartmentDTO.description;
+        const { subDepartments, ...departmentData } = createDepartmentDTO;
     
-        if (createDepartmentDTO.subDepartments) {
-            department.subDepartments = createDepartmentDTO.subDepartments.map(subDeptDTO => {
-                const subDept = new SubDepartment();
-                subDept.name = subDeptDTO.name;
-                subDept.description = subDeptDTO.description; 
-                subDept.department = department; 
-                return subDept;
-            });
+        const department = this.departmentRepository.create(departmentData);
+        await this.departmentRepository.save(department);
+    
+        if (subDepartments) {
+            const subDepartmentEntities = subDepartments.map(sub => ({
+                ...sub,
+                departmentId: department.id, 
+            }));
+    
+            await this.subDepartmentRepository.save(subDepartmentEntities);
         }
     
-
-        return await this.departmentRepository.save(department);
+        return department;
     }
     
 
