@@ -1,18 +1,16 @@
-// src/departments/dto/sub-department.dto.ts
-import { IsOptional, IsString } from 'class-validator';
-
-import { Department } from '../department.entity';
+import { IsString, IsOptional } from 'class-validator';
 
 export class SubDepartmentDTO {
-    id: number;
+    @IsOptional()
+    id?: number;
 
     @IsString()
     name: string;
 
+    @IsString()
     @IsOptional()
     description?: string;
 
-    
     @IsOptional()
     departmentId?: number; 
 }
