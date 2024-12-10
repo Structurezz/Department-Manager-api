@@ -21,6 +21,9 @@ import { join } from 'path';
             database: process.env.DB_DATABASE,
             entities: [User, Department, SubDepartment], 
             synchronize: true,
+            ssl: {
+                rejectUnauthorized: false, // Allow self-signed certificates; use with caution
+            },
         }),
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
