@@ -16,28 +16,29 @@ export class DepartmentsService {
     ) {}
 
     async create(createDepartmentDTO: CreateDepartmentDTO): Promise<Department> {
-        const { subDepartments, ...departmentData } = createDepartmentDTO;
+        const { subDepartments, parentId, ...departmentData } = createDepartmentDTO;
     
         const department = this.departmentRepository.create(departmentData);
-        await this.departmentRepository.save(department);
     
-        if (subDepartments) {
-            const subDepartmentEntities = subDepartments.map(sub => ({
-                ...sub,
-                departmentId: department.id, 
-            }));
-    
-            await this.subDepartmentRepository.save(subDepartmentEntities);
+        if (parentId) {
+            department.parent = await this.departmentRepository.findOne({ where: { id: parentId } });
         }
     
-        return department;
+        if (subDepartments) {
+            department.subDepartments = subDepartments.map(sub => this.subDepartmentRepository.create(sub));
+        }
+    
+        return await this.departmentRepository.save(department);
     }
+    
     
 
     async findAll(): Promise<Department[]> {
-   
-        return await this.departmentRepository.find({ relations: ['subDepartments'] });
+        return await this.departmentRepository.find({
+            relations: ['subDepartments', 'nestedSubDepartments', 'parent'],
+        });
     }
+    
     
     
 
