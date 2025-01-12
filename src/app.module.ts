@@ -13,7 +13,7 @@ import { join } from 'path';
     imports: [
         TypeOrmModule.forRoot({
             type: 'postgres',
-            url: 'postgresql://orizu01:T7cLvpb5Ui0aoVTvXel3KITwBc98I8Ai@dpg-ctc5rn0gph6c73ace1bg-a.oregon-postgres.render.com:5432/structurezz',
+            url: 'postgresql://department_api_user:1Q1WzWU3UcCupDgU9pzwzdCb1Ec7VCZ3@dpg-cu1u24pu0jms738m55l0-a.oregon-postgres.render.com/department_api',
             entities: [User, Department, SubDepartment], 
             synchronize: true,
             ssl: {
